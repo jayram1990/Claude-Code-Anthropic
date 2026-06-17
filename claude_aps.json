@@ -15,14 +15,14 @@
     {
       "kind": "main",
       "tag": "com-custom-sap-claude",
-      "url": "https://jayram1990.github.io/Claude-Code/ClaudeWidget.js",
+      "url": "https://jayram1990.github.io/Claude-Code-Anthropic/ClaudeWidget.js",
       "integrity": "",
       "ignoreIntegrity": true
     },
     {
       "kind": "styling",
       "tag": "com-custom-sap-claude-aps",
-      "url": "https://jayram1990.github.io/Claude-Code/aps_claude.js",
+      "url": "https://jayram1990.github.io/Claude-Code-Anthropic/aps_claude.js",
       "integrity": "",
       "ignoreIntegrity": true
     }
