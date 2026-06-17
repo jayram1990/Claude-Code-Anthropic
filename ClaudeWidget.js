@@ -132,6 +132,7 @@
 
             try {
                 const isAnthropic = apiUrl.includes("anthropic.com");
+                const isOpenRouter = apiUrl.includes("openrouter.ai");
                 const headers = { "Content-Type": "application/json" };
                 if (isAnthropic) {
                     headers["x-api-key"] = apiKey;
@@ -140,23 +141,40 @@
                 } else {
                     headers["Authorization"] = `Bearer ${apiKey}`;
                 }
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers,
-                    body: JSON.stringify({
+
+                // OpenRouter uses OpenAI format: system message inside messages array, not top-level
+                const requestBody = (isOpenRouter)
+                    ? {
+                        model: "anthropic/claude-sonnet-4-5",
+                        messages: [{ role: "system", content: systemPrompt }, ...this.conversationHistory],
+                        temperature: parseFloat(this._settings.temperature),
+                        max_tokens: parseInt(this._settings.maxTokens)
+                    }
+                    : {
                         model: this._settings.model,
                         system: systemPrompt,
                         messages: this.conversationHistory,
                         temperature: parseFloat(this._settings.temperature),
                         max_tokens: parseInt(this._settings.maxTokens)
-                    })
+                    };
+
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify(requestBody)
                 });
 
                 this.$boxDom.removeChild(this.$boxDom.lastChild);
                 const payload = await response.json();
 
-                if (payload.content && payload.content[0]) {
-                    const responseText = payload.content[0].text;
+                // Handle both Anthropic format (content[0].text) and OpenAI/OpenRouter format (choices[0].message.content)
+                const responseText = payload.content && payload.content[0]
+                    ? payload.content[0].text
+                    : payload.choices && payload.choices[0]
+                        ? payload.choices[0].message.content
+                        : null;
+
+                if (responseText) {
                     this.printMessage("ai-msg", responseText);
                     this.conversationHistory.push({ role: "assistant", content: responseText });
                 } else {
