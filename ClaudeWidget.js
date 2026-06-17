@@ -20,8 +20,8 @@
             <div class="chat-header" id="headerDom">Claude Analytics</div>
             <div class="chat-area" id="boxDom"></div>
             <div class="input-area">
-                <input type="text" id="inputDom" placeholder="Ask Claude about synchronized datasets..." disabled />
-                <button id="btnDom" disabled>➔</button>
+                <input type="text" id="inputDom" placeholder="Ask Claude about your data..." />
+                <button id="btnDom">➔</button>
             </div>
         </div>
     `;
@@ -86,6 +86,11 @@
 
         onCustomWidgetAfterUpdate(changedProperties) {
             if (changedProperties["headerLabel"]) this.$headerDom.innerText = this._settings.headerLabel;
+            if (changedProperties["apiUrl"]) this._settings.apiUrl = changedProperties["apiUrl"];
+            if (changedProperties["apiKey"]) this._settings.apiKey = changedProperties["apiKey"];
+            if (changedProperties["model"]) this._settings.model = changedProperties["model"];
+            if (changedProperties["temperature"]) this._settings.temperature = changedProperties["temperature"];
+            if (changedProperties["maxTokens"]) this._settings.maxTokens = changedProperties["maxTokens"];
             if (this.$boxDom.children.length === 0 && this._settings.welcomeMsg) {
                 this.printMessage("ai-msg", this._settings.welcomeMsg);
             }
