@@ -170,6 +170,12 @@
                 });
 
                 this.$boxDom.removeChild(this.$boxDom.lastChild);
+
+                if (!response.ok) {
+                    this.printMessage("system-msg", `API error ${response.status}: ${response.statusText}`);
+                    return;
+                }
+
                 const payload = await response.json();
 
                 // Handle both Anthropic format (content[0].text) and OpenAI/OpenRouter format (choices[0].message.content)
@@ -183,7 +189,8 @@
                     this.printMessage("ai-msg", responseText);
                     this.conversationHistory.push({ role: "assistant", content: responseText });
                 } else {
-                    this.printMessage("system-msg", "Anomaly encountered reading completion streams.");
+                    const errorDetail = payload.error ? payload.error.message : "Unknown error";
+                    this.printMessage("system-msg", `Error: ${errorDetail}`);
                 }
             } catch (err) {
                 if (this.$boxDom.lastChild.classList.contains("system-msg")) this.$boxDom.removeChild(this.$boxDom.lastChild);
