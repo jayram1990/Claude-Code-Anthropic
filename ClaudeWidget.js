@@ -96,14 +96,14 @@
             }
         }
 
-        setTableData(jsonArrayString) {
-            try {
-                this.sacContextData = JSON.parse(jsonArrayString);
+        setTableData(dataString) {
+            if (dataString && dataString.length > 0) {
+                this.sacContextData = dataString;
                 this.$inputDom.disabled = false;
                 this.$btnDom.disabled = false;
-                this.printMessage("system-msg", "Data footprint mapped! Ask Claude to scan actuals measurements.");
-            } catch(e) {
-                this.printMessage("system-msg", "Failed to deserialize input analytics payload matrix.");
+                this.printMessage("system-msg", "Data loaded! Ask Claude to analyse your market data.");
+            } else {
+                this.printMessage("system-msg", "No data received from table.");
             }
         }
 
@@ -123,7 +123,7 @@
             this.$inputDom.value = "";
             this.conversationHistory.push({ role: "user", content: prompt });
 
-            const systemPrompt = `You are a financial model analyst interpreting live acquired transactional elements in SAC. Process instructions accurately based on this array data context: ${JSON.stringify(this.sacContextData)}`;
+            const systemPrompt = `You are a financial model analyst interpreting live SAC market data. Analyse and answer questions based on this data:\n${this.sacContextData}`;
             this.printMessage("system-msg", "Claude is calculating table context...");
 
             const apiUrl = this._settings.apiUrl;
