@@ -1,0 +1,97 @@
+{
+  "id": "com.custom.sap.claude",
+  "version": "1.0.3",
+  "name": "Claude Enterprise Assistant",
+  "description": "Claude AI custom analytic widget utilizing split runtime views and custom builder styling parameters.",
+  "newInstancePrefix": "ClaudeChat",
+  "vendor": "Enterprise Analytics",
+  "eula": "",
+  "license": "MIT",
+  "icon": "https://icons8.com",
+  "imports": [
+    "input-controls"
+  ],
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "com-custom-sap-claude",
+      "url": "https://jayram1990.github.io/Claude-Code/ClaudeWidget.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    },
+    {
+      "kind": "styling",
+      "tag": "com-custom-sap-claude-aps",
+      "url": "https://jayram1990.github.io/Claude-Code/aps_claude.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    }
+  ],
+  "properties": {
+    "metadata": {
+      "type": "string",
+      "description": "Internal model framework structural data",
+      "default": ""
+    },
+    "model": {
+      "type": "string",
+      "description": "AI model specification target",
+      "default": "claude-sonnet-4-6"
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Response generation creativity metric",
+      "default": 0.2
+    },
+    "maxTokens": {
+      "type": "number",
+      "description": "Token execution limits",
+      "default": 1000
+    },
+    "headerLabel": {
+      "type": "string",
+      "description": "Visual header label name",
+      "default": "Claude Analytics"
+    },
+    "welcomeMsg": {
+      "type": "string",
+      "description": "First initialization splash text",
+      "default": "Welcome to Claude Assistant! Synchronize actuals data to model your insights."
+    },
+    "apiUrl": {
+      "type": "string",
+      "description": "Proxy backend URL that forwards requests to the Anthropic API",
+      "default": ""
+    },
+    "apiKey": {
+      "type": "string",
+      "description": "API key for the proxy backend",
+      "default": ""
+    }
+  },
+  "methods": {
+    "setTableData": {
+      "description": "Passes active canvas model string arrays straight to context memory.",
+      "parameters": [
+        {
+          "name": "jsonData",
+          "type": "string"
+        }
+      ]
+    },
+    "setHeaderLabel": {
+      "description": "Dynamically sets the header layout title",
+      "parameters": [{ "name": "value", "type": "string" }],
+      "body": "this.headerLabel = value;"
+    },
+    "getHeaderLabel": {
+      "returnType": "string",
+      "body": "return this.headerLabel;"
+    }
+  },
+  "events": {
+    "onStart": {
+      "description": "Triggers customized event structures during boot sequences."
+    }
+  }
+}
